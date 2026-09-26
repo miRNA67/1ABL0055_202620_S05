@@ -326,6 +326,7 @@ racon -t 10 /data/2025_1/database/nanopore/fastq/m01_trim.fastq.gz m01_flye_raco
 ```
 
 > **Comentario:**
+> - `conda activate shotgun`: minimap2 y Racon están disponibles en este mismo entorno, junto con Flye (no hace falta cambiar a `unicycler` para este paso). Verifique con `which minimap2` y `which racon`; si no estuvieran ahí, actívelos desde el entorno donde sí estén instalados en su servidor.
 > - `minimap2 -x map-ont`: preajuste para alinear lecturas Nanopore **contra un ensamblaje o referencia** (a diferencia de `ava-ont`, que se usa para solapamientos lectura-contra-lectura). Aquí alinea las lecturas originales contra el borrador de Flye.
 > - `-t 10`: hilos.
 > - `m01_flye_draft.fasta`: el borrador de Flye, usado como referencia para el alineamiento.
@@ -539,367 +540,49 @@ conda activate busco
 
 ```bash
 busco --list-datasets
+```
 
-Datasets available to be used with BUSCO v6.1.0 and later (numbers in brackets indicate the number of marker gene profiles):
+> **Comentario:**
+> - `--list-datasets`: descarga (la primera vez) y muestra el árbol completo de linajes disponibles, desde `bacteria_odb12.2` hasta géneros individuales. Es una salida larga (recorre las decenas de filos, familias y géneros bacterianos disponibles); búsquela con `Ctrl+F` (o en PuTTY, revise hacia arriba) por el género que identificó con blastn en la sección 5.
 
+El árbol completo es muy largo; a continuación se muestra solo el tramo que llevó, en este ejemplo, hasta el género *Enterobacter*:
+
+```
 - bacteria_odb12.2 [116]
-    - delta-epsilon_subdivisions_odb12.2 [199]
-        - deltaproteobacteria_odb12.2 [233]
-    - acidobacteriota_odb12.2 [742]
-        - acidobacteriaceae_odb12.2 [1174]
-    - synergistota_odb12.2 [550]
-    - fusobacteriota_odb12.2 [392]
-        - fusobacteriaceae_odb12.2 [639]
-            - fusobacterium_odb12.2 [774]
-        - leptotrichia_odb12.2 [896]
-    - campylobacterota_odb12.2 [623]
-        - arcobacter_odb12.2 [1166]
-    - spirochaetota_odb12.2 [205]
-        - leptospiraceae_odb12.2 [1585]
-        - brachyspira_odb12.2 [1343]
-        - spirochaetales_odb12.2 [271]
-            - treponema_odb12.2 [633]
-            - borreliaceae_odb12.2 [762]
-            - spirochaetaceae_odb12.2 [379]
-    - desulfuromonadales_odb12.2 [626]
-    - geobacteraceae_odb12.2 [783]
-        - geobacter_odb12.2 [1043]
-    - desulfovibrionales_odb12.2 [729]
-    - desulfobacterales_odb12.2 [461]
-        - desulfobacteraceae_odb12.2 [662]
-    - thermotogota_odb12.2 [548]
-    - aquificae_odb12.2 [507]
-    - mycoplasmatota_odb12.2 [157]
-        - mycoplasmatales_odb12.2 [205]
-            - mycoplasma_odb12.2 [235]
-        - acholeplasmataceae_odb12.2 [207]
-            - phytoplasma_odb12.2 [202]
-        - entomoplasmatales_odb12.2 [330]
-            - spiroplasma_odb12.2 [366]
-    - actinomycetota_odb12.2 [238]
-        - coriobacteriia_odb12.2 [421]
-            - collinsella_odb12.2 [815]
-            - atopobiaceae_odb12.2 [562]
-                - olsenella_odb12.2 [708]
-            - eggerthellaceae_odb12.2 [686]
-        - actinomycetes_odb12.2 [355]
-            - frankia_odb12.2 [1256]
-            - streptosporangiales_odb12.2 [890]
-                - nocardiopsaceae_odb12.2 [1398]
-                    - nocardiopsis_odb12.2 [1698]
-                - actinomadura_odb12.2 [1520]
-            - kitasatosporales_odb12.2 [966]
-                - streptacidiphilus_odb12.2 [1717]
-                - kitasatospora_odb12.2 [1897]
-                - streptomyces_odb12.2 [1438]
-            - pseudonocardiaceae_odb12.2 [954]
-                - pseudonocardia_odb12.2 [1277]
-                - amycolatopsis_odb12.2 [1831]
-            - propionibacteriales_odb12.2 [558]
-                - aeromicrobium_odb12.2 [1179]
-                - nocardioides_odb12.2 [1132]
-                - propionibacteriaceae_odb12.2 [689]
-            - micromonosporaceae_odb12.2 [1151]
-                - actinoplanes_odb12.2 [1983]
-            - mycobacteriales_odb12.2 [777]
-                - gordonia_odb12.2 [1657]
-                - nocardiaceae_odb12.2 [1206]
-                    - rhodococcus_odb12.2 [1635]
-                    - nocardia_odb12.2 [1646]
-                - mycobacteriaceae_odb12.2 [1275]
-                    - mycolicibacterium_odb12.2 [1712]
-                    - mycobacterium_odb12.2 [1512]
-                - corynebacterium_odb12.2 [995]
-            - micrococcales_odb12.2 [504]
-                - microbacteriaceae_odb12.2 [621]
-                    - leucobacter_odb12.2 [915]
-                    - microbacterium_odb12.2 [1023]
-                    - agromyces_odb12.2 [1307]
-                    - curtobacterium_odb12.2 [1506]
-                    - leifsonia_odb12.2 [964]
-                - intrasporangiaceae_odb12.2 [914]
-                - brachybacterium_odb12.2 [1212]
-                - brevibacterium_odb12.2 [1183]
-                - cellulomonadaceae_odb12.2 [968]
-                - micrococcaceae_odb12.2 [740]
-                    - kocuria_odb12.2 [1130]
-                    - arthrobacter_odb12.2 [1050]
-            - bifidobacteriaceae_odb12.2 [669]
-                - bifidobacterium_odb12.2 [783]
-            - actinomycetaceae_odb12.2 [582]
-                - actinomyces_odb12.2 [786]
-    - chloroflexota_odb12.2 [254]
-    - cyanobacteriota_odb12.2 [719]
-        - leptolyngbya_odb12.2 [1172]
-        - synechococcales_odb12.2 [667]
-            - prochlorococcus_odb12.2 [1128]
-            - synechococcaceae_odb12.2 [905]
-        - oscillatoriales_odb12.2 [1184]
-        - chroococcales_odb12.2 [1121]
-        - nostocales_odb12.2 [1434]
-            - nostoc_odb12.2 [2036]
-    - thermaceae_odb12.2 [977]
-        - meiothermus_odb12.2 [1449]
-        - thermus_odb12.2 [1318]
-    - deinococcus_odb12.2 [1137]
-    - bacillota_odb12.2 [201]
-        - bacilli_odb12.2 [295]
-            - lactobacillales_odb12.2 [367]
-                - enterococcaceae_odb12.2 [714]
-                    - enterococcus_odb12.2 [983]
-                - lactobacillaceae_odb12.2 [519]
-                    - weissella_odb12.2 [732]
-                    - lactobacillus_odb12.2 [487]
-                    - pediococcus_odb12.2 [970]
-                - carnobacteriaceae_odb12.2 [538]
-                    - carnobacterium_odb12.2 [964]
-                - aerococcaceae_odb12.2 [603]
-                - streptococcaceae_odb12.2 [689]
-            - bacillales_odb12.2 [429]
-                - staphylococcaceae_odb12.2 [809]
-                    - salinicoccus_odb12.2 [1182]
-                    - staphylococcus_odb12.2 [1317]
-                - exiguobacterium_odb12.2 [1779]
-                - alicyclobacillaceae_odb12.2 [665]
-                    - alicyclobacillus_odb12.2 [962]
-                - paenibacillaceae_odb12.2 [680]
-                    - brevibacillus_odb12.2 [1891]
-                    - paenibacillus_odb12.2 [946]
-                - listeriaceae_odb12.2 [1142]
-                    - listeria_odb12.2 [1431]
-                - planococcaceae_odb12.2 [855]
-                    - sporosarcina_odb12.2 [1346]
-                    - planococcus_odb12.2 [1491]
-                - bacillaceae_odb12.2 [617]
-                    - virgibacillus_odb12.2 [1304]
-                    - lysinibacillus_odb12.2 [1416]
-                    - oceanobacillus_odb12.2 [1102]
-                    - bacillus_odb12.2 [778]
-        - selenomonadales_odb12.2 [586]
-            - selenomonadaceae_odb12.2 [747]
-                - selenomonas_odb12.2 [937]
-        - veillonellaceae_odb12.2 [598]
-            - megasphaera_odb12.2 [956]
-            - veillonella_odb12.2 [1034]
-        - erysipelotrichaceae_odb12.2 [444]
-        - clostridia_odb12.2 [233]
-            - thermoanaerobacterales_odb12.2 [438]
-            - eubacteriales_odb12.2 [240]
-                - clostridiaceae_odb12.2 [389]
-                - desulfosporosinus_odb12.2 [1189]
-                - ruminococcus_odb12.2 [484]
-                - peptococcaceae_odb12.2 [506]
-                - eubacteriaceae_odb12.2 [377]
-                - peptostreptococcaceae_odb12.2 [416]
-                - lachnospiraceae_odb12.2 [444]
-                    - butyrivibrio_odb12.2 [1031]
-                    - blautia_odb12.2 [1047]
-                    - lachnoclostridium_odb12.2 [548]
-        - tissierellia_odb12.2 [379]
-            - anaerococcus_odb12.2 [839]
-            - peptoniphilus_odb12.2 [692]
-    - bacteroidota-chlorobiota_group_odb12.2 [362]
-        - cytophagia_odb12.2 [691]
-            - cytophagaceae_odb12.2 [856]
-            - cyclobacteriaceae_odb12.2 [1336]
-                - algoriphagus_odb12.2 [1755]
-            - hymenobacteraceae_odb12.2 [1140]
-                - hymenobacter_odb12.2 [1505]
-                - pontibacter_odb12.2 [1724]
-        - bacteroidia_odb12.2 [499]
-            - bacteroidales_odb12.2 [517]
-                - bacteroides_odb12.2 [1173]
-                - dysgonomonas_odb12.2 [1196]
-                - prevotellaceae_odb12.2 [878]
-                - porphyromonadaceae_odb12.2 [640]
-                - rikenellaceae_odb12.2 [780]
-                    - alistipes_odb12.2 [977]
-        - chitinophagaceae_odb12.2 [820]
-        - sphingobacteriia_odb12.2 [803]
-            - pedobacter_odb12.2 [1167]
-            - sphingobacterium_odb12.2 [1241]
-        - flavobacteriia_odb12.2 [671]
-            - polaribacter_odb12.2 [1367]
-            - nonlabens_odb12.2 [1510]
-            - aquimarina_odb12.2 [1476]
-            - maribacter_odb12.2 [1525]
-            - flavobacterium_odb12.2 [1071]
-            - tenacibaculum_odb12.2 [1205]
-            - capnocytophaga_odb12.2 [1096]
-            - chryseobacterium_odb12.2 [1260]
-        - chlorobiota_odb12.2 [980]
-    - verrucomicrobiota_odb12.2 [388]
-    - chlamydiota_odb12.2 [462]
-        - chlamydia_odb12.2 [779]
-    - planctomycetota_odb12.2 [400]
-        - planctomycetaceae_odb12.2 [877]
+    (... decenas de filos bacterianos omitidos aquí por brevedad ...)
     - pseudomonadota_odb12.2 [197]
-        - betaproteobacteria_odb12.2 [529]
-            - burkholderiales_odb12.2 [597]
-                - comamonadaceae_odb12.2 [825]
-                    - variovorax_odb12.2 [2027]
-                    - comamonas_odb12.2 [1262]
-                    - acidovorax_odb12.2 [1899]
-                - oxalobacteraceae_odb12.2 [975]
-                    - herbaspirillum_odb12.2 [1544]
-                    - janthinobacterium_odb12.2 [1924]
-                    - massilia_odb12.2 [1572]
-                - alcaligenaceae_odb12.2 [803]
-                    - bordetella_odb12.2 [1411]
-                    - achromobacter_odb12.2 [2530]
-                - burkholderiaceae_odb12.2 [705]
-                    - pandoraea_odb12.2 [1889]
-                    - ralstonia_odb12.2 [2684]
-                    - burkholderia_odb12.2 [1963]
-                    - paraburkholderia_odb12.2 [1718]
-                    - cupriavidus_odb12.2 [1923]
-            - nitrosomonadales_odb12.2 [667]
-                - methylophilaceae_odb12.2 [875]
-                - nitrosomonas_odb12.2 [1056]
-            - thauera_odb12.2 [1243]
-            - neisseriales_odb12.2 [721]
-                - neisseria_odb12.2 [1112]
-                - chromobacteriaceae_odb12.2 [1036]
-        - alphaproteobacteria_odb12.2 [426]
-            - rickettsiales_odb12.2 [345]
-                - anaplasmataceae_odb12.2 [537]
-                - rickettsiaceae_odb12.2 [563]
-            - pelagibacter_odb12.2 [929]
-            - hyphomicrobiales_odb12.2 [666]
-                - rhizobiaceae_odb12.2 [1041]
-                    - sinorhizobium_odb12.2 [3013]
-                    - rhizobium-agrobacterium_group_odb12.2 [1672]
-                        - rhizobium_odb12.2 [1796]
-                        - agrobacterium_odb12.2 [2224]
-                - bartonella_odb12.2 [914]
-                - phyllobacteriaceae_odb12.2 [1132]
-                    - mesorhizobium_odb12.2 [1895]
-                - hyphomicrobiaceae_odb12.2 [727]
-                    - hyphomicrobium_odb12.2 [1257]
-                - nitrobacteraceae_odb12.2 [972]
-                    - bradyrhizobium_odb12.2 [2236]
-                    - rhodopseudomonas_odb12.2 [2139]
-                    - afipia_odb12.2 [1981]
-                - devosia_odb12.2 [1409]
-                - bosea_odb12.2 [1747]
-                - labrenzia_odb12.2 [1977]
-                - aurantimonadaceae_odb12.2 [1060]
-                    - aureimonas_odb12.2 [1513]
-                - methylobacteriaceae_odb12.2 [1239]
-                    - methylobacterium_odb12.2 [1618]
-            - hyphomonadaceae_odb12.2 [923]
-                - hyphomonas_odb12.2 [1608]
-            - caulobacteraceae_odb12.2 [905]
-                - asticcacaulis_odb12.2 [1420]
-                - caulobacter_odb12.2 [1850]
-                - brevundimonas_odb12.2 [1400]
-            - sphingomonadales_odb12.2 [871]
-                - sphingopyxis_odb12.2 [1642]
-                - novosphingobium_odb12.2 [1101]
-                - sphingobium_odb12.2 [1494]
-                - sphingomonas_odb12.2 [1045]
-                - erythrobacteraceae_odb12.2 [1047]
-                    - porphyrobacter_odb12.2 [1631]
-                    - erythrobacter_odb12.2 [1217]
-            - rhodobacterales_odb12.2 [760]
-                - paracoccaceae_odb12.2 [901]
-                    - paracoccus_odb12.2 [1276]
-                    - rhodobacter_odb12.2 [1343]
-                - ruegeria_odb12.2 [1751]
-                - roseovarius_odb12.2 [1395]
-                - sulfitobacter_odb12.2 [1569]
-                - phaeobacter_odb12.2 [2047]
-                - loktanella_odb12.2 [1747]
-                - jannaschia_odb12.2 [1527]
-            - rhodospirillales_odb12.2 [506]
-                - acetobacteraceae_odb12.2 [724]
-                    - acetobacter_odb12.2 [1387]
-                - rhodospirillaceae_odb12.2 [653]
-                - azospirillum_odb12.2 [1776]
+        (... otras clases de Pseudomonadota omitidas ...)
         - gammaproteobacteria_odb12.2 [347]
             - enterobacterales_odb12.2 [542]
                 - enterobacteriaceae_odb12.2 [874]
                     - enterobacter_odb12.2 [2624]
                     - citrobacter_odb12.2 [3023]
-                - morganellaceae_odb12.2 [1451]
-                - yersiniaceae_odb12.2 [1783]
-                    - yersinia_odb12.2 [2609]
-                - pectobacteriaceae_odb12.2 [1612]
-                    - pectobacterium_odb12.2 [2845]
-                - erwiniaceae_odb12.2 [305]
-                    - erwinia_odb12.2 [1277]
-                    - pantoea_odb12.2 [1717]
-                    - buchnera_odb12.2 [290]
-            - pseudomonadales_odb12.2 [704]
-                - marinobacter_odb12.2 [1468]
-                - pseudomonas_odb12.2 [1504]
-            - thiotrichales_odb12.2 [398]
-                - francisellaceae_odb12.2 [839]
-                - piscirickettsiaceae_odb12.2 [642]
-            - moraxellaceae_odb12.2 [763]
-                - psychrobacter_odb12.2 [1408]
-                - moraxella_odb12.2 [1053]
-                - acinetobacter_odb12.2 [1486]
-            - cellvibrionales_odb12.2 [782]
-                - cellvibrionaceae_odb12.2 [1038]
-            - pasteurellales_odb12.2 [1063]
-            - aeromonadaceae_odb12.2 [1232]
-                - aeromonas_odb12.2 [2492]
-            - vibrionales_odb12.2 [1095]
-                - vibrio_odb12.2 [1570]
-                - photobacterium_odb12.2 [2011]
-            - alteromonadales_odb12.2 [660]
-                - alteromonas_odb12.2 [1828]
-                - psychromonas_odb12.2 [1337]
-                - idiomarina_odb12.2 [1274]
-                - shewanella_odb12.2 [1708]
-                - colwellia_odb12.2 [1370]
-                - pseudoalteromonas_odb12.2 [2022]
-            - oceanospirillales_odb12.2 [588]
-                - halomonadaceae_odb12.2 [973]
-                    - halomonas_odb12.2 [1250]
-                - alcanivorax_odb12.2 [1611]
-                - oceanospirillaceae_odb12.2 [762]
-                    - marinobacterium_odb12.2 [1270]
-                    - marinomonas_odb12.2 [1514]
-            - methylococcaceae_odb12.2 [1052]
-            - xanthomonadales_odb12.2 [918]
-                - pseudoxanthomonas_odb12.2 [1446]
-                - luteimonas_odb12.2 [1256]
-                - lysobacter_odb12.2 [1219]
-                - stenotrophomonas_odb12.2 [2025]
-                - xanthomonas_odb12.2 [2040]
-                - rhodanobacteraceae_odb12.2 [1041]
-            - chromatiales_odb12.2 [516]
-                - ectothiorhodospiraceae_odb12.2 [636]
-                    - thioalkalivibrio_odb12.2 [1198]
-                - chromatiaceae_odb12.2 [579]
-            - legionellales_odb12.2 [459]
-                - legionellaceae_odb12.2 [1441]
+                (... otras familias de Enterobacterales omitidas ...)
 ```
 
 > **Comentario:**
-> - `--list-datasets`: descarga (la primera vez) y muestra el árbol completo de linajes disponibles, desde `bacteria_odb12.2` hasta géneros individuales. Busque en el árbol el género que identificó con blastn en la sección 5.
 > - En el ejemplo de esta guía (género *Enterobacter*), el árbol incluye la ruta `bacteria_odb12.2` → `pseudomonadota_odb12.2` (el nombre actual del filo antes llamado Proteobacteria) → `gammaproteobacteria_odb12.2` → `enterobacterales_odb12.2` → `enterobacteriaceae_odb12.2` → **`enterobacter_odb12.2` [2624 marcadores]**. Al ser un linaje de género, tiene muchos más marcadores que el genérico `bacteria_odb12.2` [116], de forma análoga a como CheckM gana precisión al usar el género en `taxonomy_wf`.
 > - Si su género no aparece listado individualmente, use el nivel más específico disponible (familia, orden o clase); si no encuentra nada más cercano, use `bacteria_odb12.2`.
 
+Corra BUSCO **una vez por cada uno de los cuatro ensamblajes**, cambiando el archivo de entrada (`-i`) y el nombre de la carpeta de salida (`-o`) en cada comando:
+
 ```bash
-for f in ~/genomics/assembly/nanopore/raven/m01_raven.fasta ~/genomics/assembly/nanopore/flye/m01_flye.fasta ~/genomics/assembly/nanopore/flye/m01_flye_draft.fasta ~/genomics/assembly/illumina/m01_unicycler.fasta; do
-  name=$(basename "$f" .fasta)
-  busco -i "$f" -l enterobacter_odb12.2 -o "$name" -m genome -c 10 -f
-done
+busco -i ~/genomics/assembly/nanopore/raven/m01_raven.fasta -l enterobacter_odb12.2 -o m01_raven -m genome -c 10 -f
+
+busco -i ~/genomics/assembly/nanopore/flye/m01_flye.fasta -l enterobacter_odb12.2 -o m01_flye -m genome -c 10 -f
+
+busco -i ~/genomics/assembly/nanopore/flye/m01_flye_draft.fasta -l enterobacter_odb12.2 -o m01_flye_draft -m genome -c 10 -f
+
+busco -i ~/genomics/assembly/illumina/m01_unicycler.fasta -l enterobacter_odb12.2 -o m01_unicycler -m genome -c 10 -f
 ```
 
 > **Comentario:**
-> - `conda activate busco`: BUSCO queda instalado en este entorno.
-> - `for f in ...; do ... done`: ejecuta BUSCO una vez por cada uno de los cuatro ensamblajes (Raven, Flye pulido, Flye sin pulir y Unicycler), la misma comparación que en QUAST y CheckM.
-> - `name=$(basename "$f" .fasta)`: toma el nombre del archivo sin la ruta ni la extensión (por ejemplo, `m01_raven`), para usarlo como nombre de la carpeta de salida.
-> - `-i "$f"`: genoma de entrada.
-> - `-l enterobacter_odb12.2`: linaje de referencia, elegido en el paso anterior por ser el más específico disponible para el género identificado. **Reemplácelo por el dataset que corresponda al género de su propio barcode.**
-> - `-o "$name"`: nombre de la carpeta de salida, creada dentro del directorio actual.
+> - `-i`: genoma de entrada (cambia en cada uno de los cuatro comandos: Raven, Flye pulido, Flye sin pulir y Unicycler).
+> - `-l enterobacter_odb12.2`: linaje de referencia, elegido con `--list-datasets` por ser el más específico disponible para el género identificado. **Reemplácelo por el dataset que corresponda al género de su propio barcode.**
+> - `-o`: nombre de la carpeta de salida (cambia en cada comando, para no sobrescribir los resultados de los otros ensamblajes); se crea dentro del directorio actual.
 > - `-m genome`: modo de análisis para un ensamblaje genómico (existen también los modos `proteins` y `transcriptome`, que se usarán la próxima semana con la anotación).
 > - `-c 10`: número de hilos.
-> - `-f`: sobrescribe la carpeta de salida si ya existe (útil si repite el comando).
+> - `-f`: sobrescribe la carpeta de salida si ya existe (útil si repite algún comando).
 
 > **Nota:** La primera vez que se usa un linaje, BUSCO lo descarga de internet (unos cientos de MB). Si el servidor no tiene acceso a internet o el linaje ya está descargado, use `--offline --download_path <ruta>` apuntando a la carpeta donde esté almacenado.
 
@@ -931,17 +614,15 @@ Assembly Statistics:
         4 Mbp   Contigs N50
 ```
 
-> **Comentario:** El resumen tiene este formato (con `{{...}}` donde va cada valor de su corrida):
+> **Comentario:** El resumen incluye la versión de BUSCO, el linaje usado (con su fecha de creación, número de genomas de referencia y de marcadores), el modo de análisis (`prok_genome_prod`, es decir, genoma procariota) y el predictor de genes usado internamente (`prodigal`, el mismo que se usará la próxima semana para anotación estructural). Los campos de la sección "Results":
+> - `C` (Complete): % de genes BUSCO encontrados completos. Aquí, 98,6 % (2 587 de 2 624).
+> - `S` (Single-copy): de los completos, los que aparecen en una sola copia (98,6 %, prácticamente todos).
+> - `D` (Duplicated): de los completos, los que aparecen duplicados (0,0 % en este caso). En un genoma bacteriano, una duplicación alta puede sugerir contaminación o un ensamblaje que no colapsó bien una región repetida; aquí no hay evidencia de eso.
+> - `F` (Fragmented): genes encontrados solo parcialmente (0,5 %).
+> - `M` (Missing): genes no encontrados (0,9 %).
+> - `n`: número total de genes del linaje evaluado (2 624).
 >
-> ```
-> C:{{XX.X}}%[S:{{XX.X}}%,D:{{X.X}}%],F:{{X.X}}%,M:{{X.X}}%,n:{{N}}
-> ```
-> - `C` (Complete): % de genes BUSCO encontrados completos.
-> - `S` (Single-copy): de los completos, los que aparecen en una sola copia.
-> - `D` (Duplicated): de los completos, los que aparecen duplicados; en un genoma bacteriano, una duplicación alta puede sugerir contaminación o un ensamblaje que no colapsó bien una región repetida.
-> - `F` (Fragmented): genes encontrados solo parcialmente.
-> - `M` (Missing): genes no encontrados.
-> - `n`: número total de genes del linaje evaluado.
+> Este 98,6 % de completitud es coherente con el 99,57 % que CheckM reportó para el mismo ensamblaje (`m01_raven`): ambos métodos, con marcadores y metodologías distintas, coinciden en que el genoma está prácticamente completo.
 
 ### Comparar los cuatro resultados en un solo gráfico
 
@@ -956,8 +637,8 @@ busco --plot busco_summaries
 <img width="3000" height="1800" alt="image" src="https://github.com/user-attachments/assets/8f98992e-a2c3-4167-b198-5cd03f8fb862" />
 
 > **Comentario:**
-> - `generate_plot.py`: script incluido con BUSCO que genera un gráfico de barras comparando la completitud (C/S/D/F/M) de varios ensamblajes a partir de sus resúmenes cortos. Necesita que todos los `short_summary.*.txt` que quiera comparar estén juntos en una misma carpeta.
-> - El resultado es un archivo `busco_figure.png` (y el script R que lo generó), listo para incluir en la bitácora.
+> - `cp */short_summary.*.json busco_summaries/`: copia el resumen (en formato JSON) de cada una de las cuatro carpetas de salida a una carpeta común, que es lo que necesita el siguiente paso.
+> - `busco --plot busco_summaries`: genera un gráfico de barras que compara la completitud (C/S/D/F/M) de los cuatro ensamblajes a partir de los resúmenes JSON reunidos en la carpeta. El resultado es un archivo `busco_figure.png` (y el script R que lo generó), listo para incluir en la bitácora.
 
 > **Punto de control:** Compare el % `C` (Complete) de BUSCO con el % `Completeness` de CheckM para cada uno de los cuatro ensamblajes. Ahora ambos usan marcadores específicos del género, pero provienen de bases de datos y metodologías distintas (BUSCO: ortólogos de OrthoDB; CheckM: marcadores propios de su pipeline), así que no serán idénticos; deberían, sin embargo, mostrar el mismo patrón relativo entre ensamblajes (por ejemplo, si CheckM señala a Unicycler como el menos completo, BUSCO probablemente también lo haga).
 
@@ -980,7 +661,7 @@ busco --plot busco_summaries
 ## 8. Ensamblaje del genoma de los datos de secuenciación Nanopore generados en el curso
 
 > - Use el archivo **`b<barcode>_sup_nanofilt.fastq.gz`** que generó en la Semana 04 (carpeta `~/genomics/trimming/nanopore/`), reemplazando `<barcode>` por el código asignado a su grupo. Ese archivo ya pasó por Porechop y NanoFilt, y es el mismo que evaluó con Kraken2.
-> - Repita, con sus propios datos, todo el proceso de las secciones 3 a 7: ensamblaje con Raven y con Flye (incluyendo el pulido de Flye con Racon), obtención de métricas (QUAST), clasificación de género con 16S, validación con CheckM y clasificación de especie con ANI.
+> - Repita, con sus propios datos, todo el proceso de las secciones 3 a 7: ensamblaje con Raven y con Flye (incluyendo el pulido de Flye con Racon), obtención de métricas (QUAST), clasificación de género con 16S, validación con CheckM y BUSCO, y clasificación de especie con ANI.
 
 ### Estructura de carpetas esperada al finalizar (ejemplo con el barcode 01)
 
@@ -1007,17 +688,15 @@ Debe incluir las siguientes secciones (solo con los datos de **Nanopore**, con l
 1. **Carátula** (usar la carátula del modelo de bitácora, con los 6 integrantes del grupo)
 2. **Título**
 3. **Objetivo de la práctica**
-4. **Metodología:** flujograma de los análisis realizados con los datos de Nanopore (FASTQ limpio de la Semana 04 → ensamblaje con Raven / ensamblaje con Flye + pulido con Racon → métricas con QUAST → clasificación de género con 16S/blastn → validación con CheckM → clasificación de especie con ANI)
+4. **Metodología:** flujograma de los análisis realizados con los datos de Nanopore (FASTQ limpio de la Semana 04 → ensamblaje con Raven / ensamblaje con Flye + pulido con Racon → métricas con QUAST → clasificación de género con 16S/blastn → validación con CheckM y BUSCO → clasificación de especie con ANI)
 5. **Metodología:** estructura de las carpetas
-6. **Metodología:** versión de cada programa utilizado (`programa --version`) y parámetros principales de cada comando (por ejemplo, `-p` de Raven, `--genome-size` de Flye, rondas de pulido con Racon, el género usado en CheckM)
+6. **Metodología:** versión de cada programa utilizado (`programa --version`) y parámetros principales de cada comando (por ejemplo, `-p` de Raven, `--genome-size` de Flye, rondas de pulido con Racon, el género usado en CheckM, el linaje usado en BUSCO)
 7. **Resultados:** estadísticas de los cuatro ensamblajes (Raven, Flye pulido, Flye sin pulir y Unicycler), en una tabla comparativa a partir del reporte de QUAST, comentando el efecto del pulido y la diferencia entre lecturas largas y cortas
 8. **Resultados:** evidencia de circularización (columna `circ.` de Flye en `assembly_info.txt`; inspección del grafo de Raven en Bandage) e imágenes de Bandage de ambos ensamblajes
 9. **Resultados:** clasificación taxonómica a nivel de género (secuencia 16S, resultado de blastn)
-10. **Resultados:** estadísticas de integridad y contaminación (CheckM: completitud, contaminación y heterogeneidad de cepa, para los cuatro ensamblajes)
+10. **Resultados:** estadísticas de integridad y contaminación (CheckM: completitud, contaminación y heterogeneidad de cepa; BUSCO: C/S/D/F/M con el gráfico de `busco --plot`; para los cuatro ensamblajes)
 11. **Resultados:** clasificación taxonómica a nivel de especie (ANI/GTDB skani)
 12. **Discusión:** ¿qué importancia tiene la clasificación taxonómica en la evaluación de un ensamblaje? Relacione, además, el resultado de Kraken2 de la Semana 04 con lo obtenido en esta práctica: ¿coincide el género/especie identificado por 16S y ANI con el taxón dominante en el reporte de Kraken2?
-
-
 
 
 
