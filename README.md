@@ -666,7 +666,7 @@ busco --plot busco_summaries
 ```bash
 conda activate quality
 
-seqkit rename -n b01_sup_nanofilt.fastq.gz -o b01_rename.fastq.gz
+seqkit rename -n b01_sup_nanofilt.fastq.gz -o b01_sup_rename.fastq.gz
 ```
 
 ### Estructura de carpetas esperada al finalizar (ejemplo con el barcode 01)
