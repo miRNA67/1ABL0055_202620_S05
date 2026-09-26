@@ -155,6 +155,7 @@ mv m01_unicycler_illumina/assembly.gfa m01_unicycler.gfa
 
 ### Exportar y visualizar el archivo .gfa en el programa bandage
 
+<img width="3024" height="1738" alt="image" src="https://github.com/user-attachments/assets/74585b6a-5663-4919-907f-0269e156854d" />
 
 
 ## 3. Ensamblaje de genomas de datos de secuenciación Nanopore
@@ -200,7 +201,7 @@ grep ">" m01_raven.fasta
 
 ### Exportar y visualizar el archivo .gfa en el programa bandage
 
-> *(Inserte aquí su captura del grafo `m01_raven.gfa` abierto en Bandage.)*
+<img width="3024" height="1964" alt="image" src="https://github.com/user-attachments/assets/5b342d1f-f57d-4d09-93ae-c4ffa078f711" />
 
 ### Ensamblaje de novo del genoma con Flye
 
