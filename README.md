@@ -663,6 +663,12 @@ busco --plot busco_summaries
 > - Use el archivo **`b<barcode>_sup_nanofilt.fastq.gz`** que generó en la Semana 04 (carpeta `~/genomics/trimming/nanopore/`), reemplazando `<barcode>` por el código asignado a su grupo. Ese archivo ya pasó por Porechop y NanoFilt, y es el mismo que evaluó con Kraken2.
 > - Repita, con sus propios datos, todo el proceso de las secciones 3 a 7: ensamblaje con Raven y con Flye (incluyendo el pulido de Flye con Racon), obtención de métricas (QUAST), clasificación de género con 16S, validación con CheckM y BUSCO, y clasificación de especie con ANI.
 
+```bash
+conda activate quality
+
+seqkit rename -n b01_sup_nanofilt.fastq.gz -o b01_rename.fastq.gz
+```
+
 ### Estructura de carpetas esperada al finalizar (ejemplo con el barcode 01)
 
 ```bash
