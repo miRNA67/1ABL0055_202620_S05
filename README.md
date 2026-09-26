@@ -201,7 +201,7 @@ grep ">" m01_raven.fasta
 
 ### Exportar y visualizar el archivo .gfa en el programa bandage
 
-<img width="3024" height="1964" alt="image" src="https://github.com/user-attachments/assets/5b342d1f-f57d-4d09-93ae-c4ffa078f711" />
+<img width="3024" height="1733" alt="image" src="https://github.com/user-attachments/assets/2a3e516b-d1e6-4d95-b53c-36c133c08bf7" />
 
 ### Ensamblaje de novo del genoma con Flye
 
